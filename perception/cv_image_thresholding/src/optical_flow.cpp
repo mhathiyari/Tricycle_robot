@@ -26,7 +26,7 @@ class floor_detection
     
     floor_detection(): it_(nh_)
     {
-        image_sub_ = it_.subscribe("/usb_cam/image_raw",1,&floor_detection::imageCb,this);
+        image_sub_ = it_.subscribe("/usb_cam/image_rect_color",1,&floor_detection::imageCb,this);
         image_pub_ = it_.advertise("/floor_detector/raw_image",1);
         cv::namedWindow(OPENCV_WINDOW);
     }
@@ -68,9 +68,9 @@ class floor_detection
 
         if( prevgray.data )
         {
-        calcOpticalFlowFarneback(prevgray, gray, flow, 0.5, 3, 15, 3, 5, 1.2, 0);
+        calcOpticalFlowFarneback(prevgray, gray, flow, 0.4, 1, 12, 2, 8, 1.2, 0);
         cvtColor(prevgray, cflow, COLOR_GRAY2BGR);
-        drawOptFlowMap(flow, cflow, 16, 1.5, Scalar(0, 255, 0));
+        drawOptFlowMap(flow, cflow, 5, 1.5, Scalar(0, 255, 0));
         //imshow("flow", cflow);
         }
         //if(waitKey(30)>=0)
@@ -93,10 +93,10 @@ class floor_detection
         for(int y = 0; y < cflowmap.rows; y += step)
             for(int x = 0; x < cflowmap.cols; x += step)
             {
-                const Point2f& fxy = flow.at<Point2f>(y, x);
+                const Point2f& fxy = flow.at<Point2f>(y, x)*10;
                 line(cflowmap, Point(x,y), Point(cvRound(x+fxy.x), cvRound(y+fxy.y)),
                         color);
-                circle(cflowmap, Point(x,y), 2, color, -1);
+                circle(cflowmap, Point(x,y), 1, Scalar(0,0,0), -1);
             }
     }
 };
