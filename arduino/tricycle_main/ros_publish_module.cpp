@@ -4,10 +4,33 @@
 #include "sensor_msgs/MagneticField.h"
 #include "MPU9250.h"
 
+#include <std_msgs/String.h>
 
 ros::NodeHandle  nh;
+std_msgs::String str_msg;
+ros::Publisher chatter("chatter", &str_msg);
 
-sensor_msgs::Imu imu_msg_;
+char hello[13] = "hello world!";
+
+void ros_publish_setup()
+{
+  nh.initNode();
+  nh.advertise(chatter);
+  pinMode(LED_BUILTIN, OUTPUT);
+
+}
+
+void ros_publish()
+{
+  str_msg.data = hello;
+  chatter.publish( &str_msg );
+  nh.spinOnce();
+  digitalWrite(LED_BUILTIN, HIGH);
+
+}
+
+
+/*sensor_msgs::Imu imu_msg_;
 sensor_msgs::MagneticField mag_msg_;
 
 ros::Publisher imu_data("imu_data",&imu_msg_);
@@ -53,3 +76,4 @@ void loop() {
 
   nh.spinOnce();
 }
+*/

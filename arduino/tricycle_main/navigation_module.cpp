@@ -1,9 +1,22 @@
 #include "navigation_module.h"
-#include "ros_subcribe_module.h"
+//#include "ros_subcribe_module.h"
 #include "math.h"
 
+
+void navigation_setup()
+{
+
+}
+void navigation()
+{
+
+}
+/*
+ * 
+ * 
+ * 
 static TSPose prev_pose;
-static prev_er_phi;
+static float prev_er_phi;
 static int vel;
 void navigation_setup()
 {
@@ -35,3 +48,4 @@ void navigation()
 
 
 }
+*/
